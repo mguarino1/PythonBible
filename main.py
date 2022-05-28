@@ -25,4 +25,4 @@ def getVerse(book: str, chapter: int, verse: int):
 
 @app.get("/")
 async def read_root():
-    return "After URL enter 'book'/'chapter'/'verse' to find Bible verse.",
+    return "After URL enter 'book'/'chapter'/'verse' to find verse.",
