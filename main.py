@@ -15,12 +15,26 @@ except:
 
 @app.get("/{book}/{chapter}/{verse}")
 def getVerse(book: str, chapter: int, verse: int):
-    book = book[:1].upper() + book[1:]
     cur.execute("SELECT * FROM BibleVerses WHERE book_id=:book AND chapter=:chapter AND verse=:verse",
                 {"book": book, "chapter": chapter, "verse": verse})
     row = cur.fetchone()
-    verse = row[5] + ':' + str(row[0]) + ':' + str(row[1]) + '   ' + row[2]
-    return verse
+    if row:
+        verseRow = row[5] + ':' + str(row[0]) + \
+            ':' + str(row[1]) + '   ' + row[2]
+        return verseRow
+    else:
+        return "Verse not found."
+    # return 'hello'
+
+
+@app.get("/{book}")
+def getBook(book: str):
+    cur.execute("SELECT * FROM BibleVerses WHERE book_id=:book",
+                {"book": book})
+    rows = cur.fetchall()
+    rows = [r[5] + ':' + str(r[0]) + ':' + str(r[1]) +
+            '   ' + r[2] for r in rows]
+    return rows
 
 
 @app.get("/")
